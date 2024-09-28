@@ -20,22 +20,25 @@ def Print_Board():
 print("ゲームスタート！")
 Print_Board()
 while True:
-    input_value = input(f"プレイヤー{Turn+1}のターンです。値を入力(qで終了)：")
-    if input_value == "q":
-        print("ゲームを終了します。\n")
-        break
     try:
-        input_value = int(input_value)
-        if 0 <= input_value <= GlidScale[0]-1:
-            for n in range(GlidScale[1]-1, -1, -1):
-                if BoardGlidValues[n][input_value] == " ":
-                    BoardGlidValues[n][input_value] = "X" if Turn == 0 else "O"
-                    Turn += 1 if Turn == 0 else -1
-                    Print_Board()
-                    break
-                elif n == 0:
-                    print("その列はすでに埋まっています。他の列を選んでください。")
-        else:
-            print("範囲外です。")
+        input_value = input(f"プレイヤー{str(Turn+1)}のターンです(コマ：{'X' if Turn == 0 else 'O'})。コマを置きたい列を入力(qで終了)：")
+        if input_value == "q":
+            print("ゲームを終了します。\n")
+            break
+        try:
+            input_value = int(input_value)
+            if 0 <= input_value <= GlidScale[0]-1:
+                for n in range(GlidScale[1]-1, -1, -1):
+                    if BoardGlidValues[n][input_value] == " ":
+                        BoardGlidValues[n][input_value] = "X" if Turn == 0 else "O"
+                        Turn = 1 - Turn
+                        Print_Board()
+                        break
+                    elif n == 0:
+                        print("その列はすでに埋まっています。他の列を選んでください。")
+            else:
+                print(f"範囲外です。0から{GlidScale[0]-1}の列の値を選んでください。")
+        except:
+            print(f"0から{GlidScale[0]-1}の数字かqを入力してください。")
     except:
-        print("数字かqを入力してください。")
+        print("無効な値です。")
