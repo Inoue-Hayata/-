@@ -17,6 +17,23 @@ def Print_Board():
     print("+---"*GlidScale[0] + "+")
     print()
 
+def check_winner(mark):
+    for y in range(GlidScale[1]):
+        for x in range(GlidScale[0]):
+            if BoardGlidValues[y][x] == mark and x+4 <= GlidScale[0]:
+                if BoardGlidValues[y][x+1] == mark and BoardGlidValues[y][x+2] == mark and BoardGlidValues[y][x+3] == mark:
+                    return True
+                if y+4 <= GlidScale[1]:
+                    if BoardGlidValues[y+1][x+1] == mark and BoardGlidValues[y+2][x+2] == mark and BoardGlidValues[y+3][x+3] == mark:
+                        return True
+                if y-3 >= 0:
+                    if BoardGlidValues[y-1][x+1] == mark and BoardGlidValues[y-2][x+2] == mark and BoardGlidValues[y-3][x+3] == mark:
+                        return True
+            if BoardGlidValues[y][x] == mark and y+4 <= GlidScale[1]:
+                if BoardGlidValues[y+1][x] == mark and BoardGlidValues[y+2][x] == mark and BoardGlidValues[y+3][x] == mark:
+                    return True
+    return False
+
 print("ゲームスタート！")
 Print_Board()
 while True:
@@ -42,3 +59,14 @@ while True:
             print(f"0から{GlidScale[0]-1}の数字かqを入力してください。")
     except:
         print("無効な値です。")
+
+    if check_winner("X"):
+        print("プレイヤー1(コマ：X)の勝ち！")
+        print("ゲームを終了します。")
+        print()
+        break
+    if check_winner("O"):
+        print("プレイヤー2(コマ：O)の勝ち！")
+        print("ゲームを終了します。")
+        print()
+        break
