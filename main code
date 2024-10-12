@@ -100,7 +100,6 @@ def com_turn():
                     reward_list[x] = PvC_cal(3, Copy_of_Board, 0)
                     Copy_of_Board[y][x] = " "
                     break
-    print(reward_list)
     notFullRows = [[i, num] for i, num in enumerate(reward_list) if BoardGlidValues[0][i] == " "]
     x = random.choice([i for i, num in notFullRows if num == max([_[1] for _ in notFullRows])])
     for y in range(GlidScale[1]):
@@ -108,8 +107,10 @@ def com_turn():
             if y+1 < GlidScale[1]:
                 if BoardGlidValues[y+1][x] != " ":
                     BoardGlidValues[y][x] = "O"
+                    print(f"コンピュータのターンです(コマ：O)。コマは第{x}行に置かれました。")
             else:
                 BoardGlidValues[y][x] = "O"
+                print(f"コンピュータのターンです(コマ：O)。コマは第{x}行に置かれました。")
 
 while True:
     try:
@@ -129,7 +130,10 @@ Print_Board()
 while True:
     try:
         if mode == "PvP" or mode == "PvC" and turn == 0:
-            input_value = input(f"プレイヤー{turn+1}のターンです(コマ：{'X' if turn == 0 else 'O'})。コマを置きたい列を入力(qで終了)：")
+            if mode == "PvP":
+                input_value = input(f"プレイヤー{turn+1}のターンです(コマ：{'X' if turn == 0 else 'O'})。コマを置きたい行を入力(qで終了)：")
+            elif mode == "PvC":
+                input_value = input("あなたのターンです(コマ：X)。コマを置きたい行を入力(qで終了)：")
             if input_value == "q":
                 print("ゲームを終了します。\n")
                 break
@@ -142,9 +146,9 @@ while True:
                             turn = 1 - turn
                             break
                         elif n == 0:
-                            print("その列はすでに埋まっています。他の列を選んでください。")
+                            print("その行はすでに埋まっています。他の行を選んでください。")
                 else:
-                    print(f"範囲外です。0から{GlidScale[0]-1}の列の値を選んでください。")
+                    print(f"範囲外です。0から{GlidScale[0]-1}の行の値を選んでください。")
             except:
                 print(f"0から{GlidScale[0]-1}の数字かqを入力してください。")
         else:
@@ -160,7 +164,10 @@ while True:
         print()
         break
     if check_winner(BoardGlidValues, "O"):
-        print("プレイヤー2(コマ：O)の勝ち！")
+        if mode == "PvP":
+            print("プレイヤー2(コマ：O)の勝ち！")
+        elif mode == "PvC":
+            print("コンピュータ(コマ：O)の勝ち！")
         print("ゲームを終了します。")
         print()
         break
