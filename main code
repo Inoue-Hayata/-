@@ -6,6 +6,7 @@ for _ in range(GlidScale[1]):
     BoardGlidValues += [[" "]*int(GlidScale[0])]
 turn = 0
 mode = "PvP"
+lastPlace = None
 
 def Print_Board():
     print()
@@ -15,7 +16,10 @@ def Print_Board():
     print("+---"*GlidScale[0] + "+")
     for y in range(GlidScale[1]):
         for x in range(GlidScale[0]):
-            print(f"| {BoardGlidValues[y][x]} ", end="")
+            if lastPlace == None or lastPlace[0] != x or lastPlace[1] != y:
+                print(f"| {BoardGlidValues[y][x]} ", end="")
+            elif lastPlace[0] == x and lastPlace[1] == y:
+                print(f"|*{BoardGlidValues[y][x]}*", end="")
         print("|")
     print("+---"*GlidScale[0] + "+")
     print()
@@ -107,9 +111,12 @@ def com_turn():
             if y+1 < GlidScale[1]:
                 if BoardGlidValues[y+1][x] != " ":
                     BoardGlidValues[y][x] = "O"
+                    global lastPlace
+                    lastPlace = [x, y]
                     print(f"コンピュータのターンです(コマ：O)。コマは第{x}行に置かれました。")
             else:
                 BoardGlidValues[y][x] = "O"
+                lastPlace = [x, y]
                 print(f"コンピュータのターンです(コマ：O)。コマは第{x}行に置かれました。")
 
 while True:
@@ -143,6 +150,7 @@ while True:
                     for n in range(GlidScale[1]-1, -1, -1):
                         if BoardGlidValues[n][input_value] == " ":
                             BoardGlidValues[n][input_value] = "X" if turn == 0 else "O"
+                            lastPlace = [input_value, n]
                             turn = 1 - turn
                             break
                         elif n == 0:
